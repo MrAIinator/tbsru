@@ -1,0 +1,13 @@
+{
+  "selectWorld.gameMode.spectator.info": "Смотреть можно. Трогать нельзя.",
+  "selectWorld.gameMode.spectator.line1": "Смотреть можно. Трогать нельзя",
+  "selectWorld.gameMode.spectator.line2": "",
+  "selectWorld.gameMode.survival": "Уходи",
+  "selectWorld.gameMode.survival.info": "Это место не для тебя.",
+  "selectWorld.gameMode.survival.line1": "Здесь нечего искать",
+  "selectWorld.gameMode.survival.line2": "Я здесь.",
+  "subtitles.entity.sheep.death": "303 умирает",
+  "title.singleplayer": "[ОДИНОЧНАЯ.force_activate]",
+  "soundCategory.master": "ERROR.тебе_нельзя",
+  "item.minecraft.fire": "Огонь"
+}

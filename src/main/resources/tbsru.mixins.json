@@ -1,0 +1,7 @@
+{
+  "required": false,
+  "package": "dev.mrainator.tbsru.mixin",
+  "compatibilityLevel": "JAVA_21",
+  "mixins": ["ChatResponseMixin"],
+  "injectors": { "defaultRequire": 1 }
+}

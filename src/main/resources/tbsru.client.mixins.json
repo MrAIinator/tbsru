@@ -1,0 +1,7 @@
+{
+  "required": false,
+  "package": "dev.mrainator.tbsru.mixin",
+  "compatibilityLevel": "JAVA_21",
+  "client": ["SignTextMixin", "BookPageMixin"],
+  "injectors": { "defaultRequire": 1 }
+}

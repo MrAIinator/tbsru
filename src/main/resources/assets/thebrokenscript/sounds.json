@@ -1,0 +1,14 @@
+{
+  "disc15_betray": {
+    "subtitle": "subtitles.thebrokenscript.disc15.betray",
+    "sounds": ["thebrokenscript:disc15_betray"]
+  },
+  "disc16_youcant": {
+    "subtitle": "subtitles.thebrokenscript.disc16.youcant",
+    "sounds": ["thebrokenscript:disc16_youcant"]
+  },
+  "disc17": {
+    "subtitle": "subtitles.thebrokenscript.disc17.silenced",
+    "sounds": [{ "name": "thebrokenscript:disc17_silenced", "volume": 0.6 }]
+  }
+}
