@@ -1,6 +1,7 @@
 package dev.mrainator.tbsru.mixin;
 
 import dev.mrainator.tbsru.LibraryRu;
+import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.components.Button;
 import net.minecraft.network.chat.Component;
 import org.spongepowered.asm.mixin.Mixin;
@@ -16,6 +17,12 @@ public class LibraryBookMixin {
     private int bookId;
 
     @Shadow
+    private int currentPage;
+
+    @Shadow
+    private Component pageContent;
+
+    @Shadow
     private Button homeButton;
 
     @Inject(method = "loadPage", at = @At("RETURN"), cancellable = true)
@@ -23,6 +30,13 @@ public class LibraryBookMixin {
         String ru = LibraryRu.page(bookId, page);
         if (ru == null) return;
         cir.setReturnValue(Component.literal(ru));
+    }
+
+    @Inject(method = "render", at = @At("HEAD"))
+    private void tbsru$render(GuiGraphics graphics, int mouseX, int mouseY, float partialTick, CallbackInfo ci) {
+        if (this.pageContent == null) return;
+        String ru = LibraryRu.page(this.bookId, this.currentPage + 1);
+        if (ru != null) this.pageContent = Component.literal(ru);
     }
 
     @Inject(method = "createButtons", at = @At("RETURN"))
