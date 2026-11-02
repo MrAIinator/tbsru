@@ -1,5 +1,6 @@
 package dev.mrainator.tbsru;
 
+import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
@@ -10,12 +11,32 @@ import java.util.HashMap;
 import java.util.Map;
 import net.minecraft.network.chat.Component;
 
-/** Exact sign and book lines. Names and glitch tokens are left as written in the json. */
+/** Sign lines. A whole sign is translated together, so the sentence stays in order. */
 public final class RuLines {
     private static Map<String, String> map = Map.of();
+    private static Map<String, String[]> signs = Map.of();
     private static boolean loaded;
 
     private RuLines() {
+    }
+
+    public static String signLine(String[] lines, int index) {
+        load();
+        if (lines == null || index < 0 || index >= lines.length || signs.isEmpty()) return null;
+        String[] hit = signs.get(key(lines, false));
+        if (hit == null) hit = signs.get(key(lines, true));
+        if (hit == null || index >= hit.length) return null;
+        return hit[index];
+    }
+
+    private static String key(String[] lines, boolean trim) {
+        StringBuilder sb = new StringBuilder();
+        for (int i = 0; i < lines.length; i++) {
+            if (i > 0) sb.append('\n');
+            String line = lines[i] == null ? "" : lines[i];
+            sb.append(trim ? line.trim() : line);
+        }
+        return sb.toString();
     }
 
     public static Component translate(Component component) {
@@ -52,19 +73,41 @@ public final class RuLines {
     private static void load() {
         if (loaded) return;
         loaded = true;
+        map = readFlat("/assets/tbsru/lines.json");
+        signs = readSigns("/assets/tbsru/signs.json");
+    }
+
+    private static Map<String, String> readFlat(String path) {
         Map<String, String> parsed = new HashMap<>();
-        try (InputStream in = RuLines.class.getResourceAsStream("/assets/tbsru/lines.json")) {
-            if (in == null) {
-                map = Map.of();
-                return;
-            }
+        try (InputStream in = RuLines.class.getResourceAsStream(path)) {
+            if (in == null) return Map.of();
             JsonObject obj = JsonParser.parseReader(new InputStreamReader(in, StandardCharsets.UTF_8)).getAsJsonObject();
             for (Map.Entry<String, JsonElement> entry : obj.entrySet()) {
                 if (entry.getValue().isJsonPrimitive()) parsed.put(entry.getKey(), entry.getValue().getAsString());
             }
         } catch (Exception ignored) {
-            parsed.clear();
+            return Map.of();
         }
-        map = parsed;
+        return parsed;
+    }
+
+    private static Map<String, String[]> readSigns(String path) {
+        Map<String, String[]> parsed = new HashMap<>();
+        try (InputStream in = RuLines.class.getResourceAsStream(path)) {
+            if (in == null) return Map.of();
+            JsonObject obj = JsonParser.parseReader(new InputStreamReader(in, StandardCharsets.UTF_8)).getAsJsonObject();
+            for (Map.Entry<String, JsonElement> entry : obj.entrySet()) {
+                if (!entry.getValue().isJsonArray()) continue;
+                JsonArray array = entry.getValue().getAsJsonArray();
+                String[] lines = new String[array.size()];
+                for (int i = 0; i < array.size(); i++) {
+                    lines[i] = array.get(i).isJsonPrimitive() ? array.get(i).getAsString() : "";
+                }
+                parsed.put(entry.getKey(), lines);
+            }
+        } catch (Exception ignored) {
+            return Map.of();
+        }
+        return parsed;
     }
 }
