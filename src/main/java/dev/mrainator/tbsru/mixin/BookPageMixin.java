@@ -1,5 +1,6 @@
 package dev.mrainator.tbsru.mixin;
 
+import dev.mrainator.tbsru.RuBooks;
 import dev.mrainator.tbsru.RuLines;
 import java.util.ArrayList;
 import java.util.List;
@@ -21,6 +22,12 @@ public class BookPageMixin {
         boolean any = false;
         List<Component> next = new ArrayList<>(pages.size());
         for (Component page : pages) {
+            String whole = page == null ? null : RuBooks.page(page.getString());
+            if (whole != null) {
+                next.add(Component.literal(whole).withStyle(page.getStyle()));
+                any = true;
+                continue;
+            }
             Component translated = RuLines.translate(page);
             if (translated != null) {
                 next.add(translated);

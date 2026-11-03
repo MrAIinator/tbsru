@@ -2,6 +2,6 @@
   "required": false,
   "package": "dev.mrainator.tbsru.mixin",
   "compatibilityLevel": "JAVA_21",
-  "client": ["SignTextMixin", "BookPageMixin", "LibraryBookMixin", "LibraryAnimMixin", "ChatLineMixin"],
+  "client": ["SignTextMixin", "BookPageMixin", "WritableBookMixin", "ItemNameMixin", "EntityNameMixin", "LibraryBookMixin", "LibraryAnimMixin", "ChatLineMixin"],
   "injectors": { "defaultRequire": 1 }
 }
